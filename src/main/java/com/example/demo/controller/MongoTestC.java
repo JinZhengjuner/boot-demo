@@ -111,7 +111,7 @@ public class MongoTestC {
         update.inc("available_qty", num);
         update.set("timestamp", new Date());
         mongoTestService.update();
-        return "更新成功";
+        return "更新成功1";
     }
 
 
