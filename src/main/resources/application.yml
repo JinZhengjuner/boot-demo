@@ -1,9 +1,12 @@
 spring:
   data:
     mongodb:
-      uri: mongodb:/123.60.19.184:27017/test
-  redis:
-    host: 123.60.19.184
+#      uri: mongodb://123.60.19.184:27017/test
+      host: 123.60.19.184
+      port: 27017
+      database: test
+#  redis:
+#    host: 123.60.19.184
 server:
   port: 8081
 my: ${my}

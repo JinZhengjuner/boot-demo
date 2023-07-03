@@ -6,6 +6,9 @@ import com.example.demo.pojo.MongoTest;
 import com.example.demo.service.MongoTestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +102,18 @@ public class MongoTestC {
     public String batchInsert() {
         return mongoTestService.batchInsert();
     }
+
+    @GetMapping(value = "/test/update")
+    public String update(long EntId, String regionCode, String barcode, String itemCode, double num){
+        Query query = new Query(Criteria.where("ent_id").is(EntId)
+                .and("barcode").is(barcode).and("item_code").is(itemCode).and("region_code").is(regionCode));
+        Update update = new Update();
+        update.inc("available_qty", num);
+        update.set("timestamp", new Date());
+        mongoTestService.update();
+        return "更新成功";
+    }
+
 
 }
 

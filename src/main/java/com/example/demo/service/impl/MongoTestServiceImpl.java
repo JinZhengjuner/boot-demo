@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +106,10 @@ public class MongoTestServiceImpl implements MongoTestService {
 
     @Override
     public void update() {
-        Query query = new Query();
-//        mongoTemplate.updateFirst()
+        Query query = new Query(Criteria.where("name").is("jinzhengjun").and("address").is("chengdu").and("age").is(5));
+        Update update = new Update();
+        update.set("updateTime", new Date());
+        update.set("age",18);
+        mongoTemplate.updateFirst(query, update, "test");
     }
 }
