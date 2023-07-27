@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.pojo.A;
 import com.example.demo.pojo.MongoTest;
 import com.example.demo.service.MongoTestService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,17 +11,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Slf4j
@@ -29,6 +25,34 @@ import java.util.Map;
 public class MongoTestC {
     @Autowired
     private MongoTestService mongoTestService;
+
+    public static void main(String[] args) throws InterruptedException {
+//        List<Integer> list = new ArrayList<>();
+//        List<Integer> collect = Optional.ofNullable(list)
+//                .orElse(Collections::emptyList)
+//                .stream()
+//                .filter(StringUtils::isEmpty)
+//                .collect(Collectors.toList());
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(1,1);
+        map.put(2,2);
+        map.forEach((k, v) -> {
+            System.out.println("k:" + k);
+            System.out.println("v:" + v);
+        });
+
+
+    }
+
+    @RequestMapping("/A")
+    public String testA(@RequestBody@Validated A a, @NotBlank(message = "d不能为空") String d,@NotNull(message = "e不能为null") String e){
+        return "success";
+    }
+
+//    @GetMapping("/A")
+//    public String A2(@RequestBody A a,String d,String e){
+//        return a + d + e;
+//    }
 
     @PostMapping("/map")
     public String x(@RequestBody Map<String, String> map) {
