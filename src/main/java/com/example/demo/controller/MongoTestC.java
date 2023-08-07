@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.pojo.A;
+import com.example.demo.config.ThresholdConfig;
 import com.example.demo.pojo.MongoTest;
 import com.example.demo.service.MongoTestService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.*;
 
@@ -26,6 +25,17 @@ public class MongoTestC {
     @Autowired
     private MongoTestService mongoTestService;
 
+    @Scheduled(fixedRate = 50 * 1000)
+//    @Async
+    public void sss() throws InterruptedException {
+        log.info("执行了");
+        Thread.sleep(1500);
+        log.info("执行完毕");
+    }
+
+    @Autowired
+    private ThresholdConfig thresholdConfig;
+
     public static void main(String[] args) throws InterruptedException {
 //        List<Integer> list = new ArrayList<>();
 //        List<Integer> collect = Optional.ofNullable(list)
@@ -34,8 +44,8 @@ public class MongoTestC {
 //                .filter(StringUtils::isEmpty)
 //                .collect(Collectors.toList());
         Map<Integer, Integer> map = new HashMap<>();
-        map.put(1,1);
-        map.put(2,2);
+        map.put(1, 1);
+        map.put(2, 2);
         map.forEach((k, v) -> {
             System.out.println("k:" + k);
             System.out.println("v:" + v);
@@ -45,7 +55,8 @@ public class MongoTestC {
     }
 
     @RequestMapping("/A")
-    public String testA(@RequestBody@Validated A a, @NotBlank(message = "d不能为空") String d,@NotNull(message = "e不能为null") String e){
+    public String testA() throws InterruptedException {
+        sss();
         return "success";
     }
 
@@ -128,7 +139,7 @@ public class MongoTestC {
     }
 
     @GetMapping(value = "/test/update")
-    public String update(long EntId, String regionCode, String barcode, String itemCode, double num){
+    public String update(long EntId, String regionCode, String barcode, String itemCode, double num) {
         Query query = new Query(Criteria.where("ent_id").is(EntId)
                 .and("barcode").is(barcode).and("item_code").is(itemCode).and("region_code").is(regionCode));
         Update update = new Update();
