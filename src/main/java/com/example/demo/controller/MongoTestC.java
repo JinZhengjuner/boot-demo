@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.demo.config.ThresholdConfig;
 import com.example.demo.pojo.MongoTest;
 import com.example.demo.service.MongoTestService;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +25,13 @@ public class MongoTestC {
     @Autowired
     private MongoTestService mongoTestService;
 
-    @Scheduled(fixedRate = 50 * 1000)
-//    @Async
-    public void sss() throws InterruptedException {
-        log.info("执行了");
-        Thread.sleep(1500);
-        log.info("执行完毕");
-    }
+//    @Scheduled(fixedRate = 50 * 1000)
+////    @Async
+//    public void sss() throws InterruptedException {
+//        log.info("执行了");
+//        Thread.sleep(1500);
+//        log.info("执行完毕");
+//    }
 
     @Autowired
     private ThresholdConfig thresholdConfig;
@@ -43,20 +43,21 @@ public class MongoTestC {
 //                .stream()
 //                .filter(StringUtils::isEmpty)
 //                .collect(Collectors.toList());
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(1, 1);
-        map.put(2, 2);
-        map.forEach((k, v) -> {
-            System.out.println("k:" + k);
-            System.out.println("v:" + v);
-        });
+
+        for (int i = 0; i < 100; i++) {
+            int j = (int)(Math.random() * 5 + 5);
+            log.info(j+"");
+        }
+
 
 
     }
 
     @RequestMapping("/A")
     public String testA() throws InterruptedException {
-        sss();
+        String appIdToThresholdStr = thresholdConfig.getAppIdToThresholdStr();
+        Map<String, String> appIdToThresholdMap = JSON.parseObject(appIdToThresholdStr, new TypeReference<HashMap<String, String>>(){});
+//        sss();
         return "success";
     }
 
