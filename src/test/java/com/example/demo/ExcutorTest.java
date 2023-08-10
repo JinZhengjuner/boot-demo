@@ -1,15 +1,25 @@
 package com.example.demo;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Slf4j
 public class ExcutorTest {
+
+
+    @Test
+    @SneakyThrows
+    public void test1() {
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        log.info("start");
+        executorService.schedule(()->{
+            log.info("执行了");
+        }, 5, TimeUnit.SECONDS);
+        Thread.sleep(100000);
+    }
 
     ExecutorService executor = Executors.newFixedThreadPool(2);
     SynchronousQueue<Object> synchronousQueue = new SynchronousQueue<>();
