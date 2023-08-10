@@ -3,6 +3,7 @@ package com.example.demo;
 import com.alibaba.fastjson2.JSON;
 import com.example.demo.config.ThresholdConfig;
 import com.example.demo.pojo.StockFlowLog;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -21,10 +22,11 @@ public class DemoTest {
     @Before
     public void setUp() throws Exception {
     }
-
     @Test
+    @SneakyThrows
     public void config(){
-        log.info("xx");
+
+
     }
 
     @Test
