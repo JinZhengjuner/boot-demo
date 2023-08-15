@@ -61,6 +61,14 @@ public class MongoTestC {
         return "success";
     }
 
+    @RequestMapping("/B")
+    public void testB() throws InterruptedException {
+        while (true){
+            System.out.println("BBBBB");
+        }
+
+    }
+
 //    @GetMapping("/A")
 //    public String A2(@RequestBody A a,String d,String e){
 //        return a + d + e;
