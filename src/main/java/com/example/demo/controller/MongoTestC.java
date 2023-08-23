@@ -58,7 +58,12 @@ public class MongoTestC {
         String appIdToThresholdStr = thresholdConfig.getAppIdToThresholdStr();
         Map<String, String> appIdToThresholdMap = JSON.parseObject(appIdToThresholdStr, new TypeReference<HashMap<String, String>>(){});
 //        sss();
+        a();
         return "success";
+    }
+
+    private void a() throws InterruptedException {
+        Thread.sleep(1000);
     }
 
     @RequestMapping("/B")
