@@ -1,25 +1,64 @@
 package com.example.demo.pojo;
 
 import cn.hutool.core.io.IoUtil;
+import com.alibaba.fastjson.JSON;
+import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.BulkOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.*;
 
-@RestController("/file")
+@RestController
+@RequestMapping("/file")
+@Slf4j
 public class MongoGridFsController {
 
     @Autowired
+    private MongoTemplate mongoTemplate;
+
+
+    @GetMapping("/mongo")
+    @Transactional(rollbackFor = Exception.class)
+    public String testMongo() {
+        Map<String,String> map = new LinkedHashMap();
+        BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, User.class);
+        List<User> userList = new ArrayList<>();
+        userList.add(new User("001", "Alice", Arrays.asList("a", "b"), 1D));
+        userList.add(new User("002", "Bob", Arrays.asList("c", "d"), 2.4D));
+        bulkOps.insert(userList);
+
+//        Query query = new Query(Criteria.where("name").is("张三"));
+//        Update update = new Update().set("name", "张三更新了").set("age", 21);
+//        bulkOps.updateOne(query, update);
+//
+//        Query query1 = new Query(Criteria.where("name").is("李四"));
+//        Update update1 = new Update().set("name", "李四更新了").set("age", 21).set("qty", 0.1D);
+//        bulkOps.updateOne(query1, update1);
+
+        BulkWriteResult execute = bulkOps.execute();
+        log.info(JSON.toJSONString(execute));
+        int i = 1/0;
+        return "success";
+    }
+
+
+        @Autowired
     private GridFsTemplate gridFsTemplate;
 
     /**

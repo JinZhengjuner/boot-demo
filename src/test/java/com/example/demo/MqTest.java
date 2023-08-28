@@ -2,7 +2,6 @@ package com.example.demo;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.utils.Lists;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
@@ -21,15 +20,12 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class MqTest {
     private static void sendMessage(MQProducer producer, Integer orderId) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 100; i++) {
             try {
                 Message msg =
                         new Message("OrderTest", "TagA", i + "",
@@ -103,12 +99,13 @@ public class MqTest {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("example");
         consumer.setNamesrvAddr("123.60.19.184:9876");
 
-        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
 
         consumer.subscribe("OrderTest", "*");
         //消费者并行消费
         consumer.setConsumeThreadMin(3);
         consumer.setConsumeThreadMax(6);
+
 
         consumer.registerMessageListener((MessageListenerOrderly) (msgs, context) -> {
 //                context.setAutoCommit(false);
@@ -130,24 +127,6 @@ public class MqTest {
     public void cosumer1() throws MQClientException, InterruptedException {
 //        normal();
         order();
-    }
-
-    @Test
-    public void test(){
-        List<Integer> list1 = Arrays.asList(1);
-        List<Integer> list2 = Arrays.asList(2);
-        List<Integer> list3 = Arrays.asList(3);
-        List<List<Integer>> list = new ArrayList<>();
-        list.add(list1);
-        list.add(list2);
-        list.add(list3);
-        list.stream().reduce(Lists.newArrayList(), (a, b) ->  {
-            a.addAll(b);
-            return a;
-        });
-
-
-
     }
 
     @Test

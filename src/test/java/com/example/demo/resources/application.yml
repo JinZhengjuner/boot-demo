@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+#      uri: mongodb://123.60.19.184:27017/test
+      host: 123.60.19.184
+      port: 27017
+      database: test
+  redis:
+    host: 123.60.19.184
+    port: 6379
+    password: root
+server:
+  port: 8081
+my: ${my}
+#mtwm-api-threshold:
+#  appIdToThresholdStr: 99
