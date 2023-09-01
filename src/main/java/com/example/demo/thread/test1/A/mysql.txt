@@ -1,0 +1,10 @@
+explain:
+5.7之后：partition filtered
+show warning;//会看出mysql优化后的查询语句长什么样子
+
+system>const>eq_ref>ref>range>index>all
+system:整张表只有一条数据
+
+
+
+
