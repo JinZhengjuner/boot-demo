@@ -6,7 +6,7 @@ spring:
 #      port: 27017
 #      database: test
   redis:
-    host: vpn.iticic.cn
+    host: 123.60.19.184
     port: 6379
 #    password: root
 server:
