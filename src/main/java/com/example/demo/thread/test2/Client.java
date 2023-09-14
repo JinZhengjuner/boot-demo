@@ -1,16 +1,37 @@
 package com.example.demo.thread.test2;
 
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
+@Slf4j
 public class Client {
     public static void main(String[] args) {
-        MyExecutor executor = new MyExecutor(5);
-        Stream.iterate(1, item -> item + 1).limit(10).forEach(item -> {
-            executor.execute(() -> { try {
-                System.out.println(Thread.currentThread().getName() + " execute this task");
-                TimeUnit.SECONDS.sleep(2); } catch (InterruptedException e) {
-                e.printStackTrace(); }
-            }); }
-        ); }
+        System.out.println(isValidStock("2.32"));
+
+    }
+
+    private static boolean isValidStock(String stock) {
+        if (StringUtils.isBlank(stock)){
+            return false;
+        }
+        try {
+            int value = Integer.parseInt(stock);
+            if (value >= 0 && value <= 99999) {
+                return isValidDouble(stock);
+            }
+        } catch (NumberFormatException e) {
+            log.info("批量修改库存，stock校验失败");
+        }
+        return false;
+    }
+
+    private static boolean isValidDouble(String qty) {
+        try {
+            Double.valueOf(qty);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
 }

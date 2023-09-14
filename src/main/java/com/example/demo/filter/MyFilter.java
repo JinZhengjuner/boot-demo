@@ -11,8 +11,8 @@ import java.io.IOException;
 public class MyFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        log.info("request: {}", servletRequest);
+//        log.info("request: {}", servletRequest);
         filterChain.doFilter(servletRequest, servletResponse);
-        log.info("resp: {}", servletResponse);
+//        log.info("resp: {}", servletResponse);
     }
 }

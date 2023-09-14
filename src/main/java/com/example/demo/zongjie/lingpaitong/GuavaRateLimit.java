@@ -1,72 +1,32 @@
 package com.example.demo.zongjie.lingpaitong;
 
-import com.google.common.util.concurrent.RateLimiter;
+import io.lettuce.core.dynamic.annotation.Param;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
 
 @Slf4j
 @RestController
 @RequestMapping("limit")
 public class GuavaRateLimit {
+    private static Long barcode = 6978765856004L;
+    private static Integer itemcode = 1873204;
+    private static Integer num = 4;
 
-    static RateLimiter limiter = RateLimiter.create(2);
 
-    public static class Task implements Runnable{
-
-        @Override
-        public void run() {
-            System.out.println(new SimpleDateFormat("HH:mm:ss:Sss").format(new Date()));
-        }
+    @GetMapping("get")
+    public StockDTO getNum(){
+        StockDTO stockDTO = new StockDTO();
+        stockDTO.setCode(String.valueOf(itemcode++));
+        stockDTO.setBarcode(String.valueOf(barcode++));
+        stockDTO.setBrandName("测试品牌"+ num);
+        stockDTO.setName("测试商品"+ num++);
+        return stockDTO;
     }
 
-    @GetMapping("/test/{num}")
-    public void a(@PathVariable("num")int num){
-        limiter.acquire(num);
-        log.info("success,{}", num);
-    }
-
-
-    public static void main(String[] args) {
-        double waitTime = limiter.acquire(20);
-        log.info("xxx");
-        limiter.acquire(20);
-        log.info("2222");
-        new Thread(() -> {
-            limiter.acquire(20);
-            log.info("new");
-        }).start();
-
-//        for (int i = 0; i < 5; i++) {
-//            double acquire = limiter.acquire();
-//            System.out.println(i + "---" + acquire + "------" + new SimpleDateFormat("HH:mm:ss").format(new Date()));
-////            new Thread(new Task()).start();
-////            System.out.println(new SimpleDateFormat("HH:mm:ss").format(new Date()));
-//        }
-
-
-//        // 每秒生成5个令牌
-//        RateLimiter limiter = RateLimiter.create(50.0);
-//
-//        for (int i = 0; i < 20; i++) {
-//            // 获取令牌
-//            double waitTime = limiter.acquire(20);
-//            log.info("xxx");
-//        }
-
-
-    }
-
-    private static void 吗() {
-        Collection<String> tasks = Arrays.asList("1", "2", "3", "4");
-        String[] values = tasks.toArray(new String[0]);
-        System.out.println(values);
+    @GetMapping("/test/result")
+    public void b(@Param("num") String num){
+        log.info("获取到变量中的结果, {}", num);
     }
 }
