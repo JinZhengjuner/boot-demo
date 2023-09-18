@@ -1,4 +1,4 @@
-package com.example.demo.arthas;
+package com.example.demo.arthas.other;
 
 import com.example.demo.controller.test.User;
 
