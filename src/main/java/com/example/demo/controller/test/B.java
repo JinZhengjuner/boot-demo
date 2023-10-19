@@ -16,6 +16,7 @@ public class B {
     private String address;
 
     public static void main(String[] args) {
+        //等会儿回滚到这里就正确了
         System.out.println(StringUtils.isEmpty("   "));
         System.out.println(StringUtils.isBlank("   "));
     }
