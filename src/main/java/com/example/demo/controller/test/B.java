@@ -1,21 +1,22 @@
 package com.example.demo.controller.test;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class B {
     @JSONField(name = "a")
-    private String a;
+    private String name;
+
+    private String address;
 
     public static void main(String[] args) {
-        String str = "{\"A\":\"_aaa___\",\"a\":\"aaa\"}";
-        B b1 = JSON.parseObject(str, B.class);
-        System.out.println(b1);
+        System.out.println(StringUtils.isEmpty("   "));
+        System.out.println(StringUtils.isBlank("   "));
     }
 }

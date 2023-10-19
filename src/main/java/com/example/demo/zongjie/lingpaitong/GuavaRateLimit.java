@@ -1,7 +1,9 @@
 package com.example.demo.zongjie.lingpaitong;
 
+import com.example.demo.config.MafkaConsumerProperties;
 import io.lettuce.core.dynamic.annotation.Param;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +16,8 @@ public class GuavaRateLimit {
     private static Integer itemcode = 1873204;
     private static Integer num = 4;
 
+    @Autowired
+    private MafkaConsumerProperties mafkaConsumerProperties;
 
     @GetMapping("get")
     public StockDTO getNum(){

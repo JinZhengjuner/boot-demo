@@ -14,3 +14,11 @@ server:
 my: ${my}
 #mtwm-api-threshold:
 #  appIdToThresholdStr: 99
+mafka:
+  consumer:
+    - namespace: waimai
+      topic: shangou.emproduct.merchant.sku.change.notify.topic
+      group: merchant_sku_change_stock_consumer
+      listener: com.sankuai.shangou.supplychain.centralstock.sync.infrastructure.mq.consumer.MerchantSkuChangeStockConsumer
+      className: java.lang.String
+      consumerType: CommonConsumer
