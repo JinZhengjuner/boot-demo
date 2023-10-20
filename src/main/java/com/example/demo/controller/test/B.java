@@ -15,6 +15,7 @@ public class B {
     private String address;
 
     public static void main(String[] args) {
+        //1
     //正确的
 
     }
