@@ -20,10 +20,13 @@ public class Person {
     private byte[] data;
 
     public static void main(String[] args) throws IOException {
+
+        log.warn("warn..............");
         for (int i = 0; i < 100; i++) {
             int j = (int)(Math.random() * 5 + 5);
             System.out.println(j);
         }
+        log.error("error..............");
     }
 
     private static void 没() throws IOException {

@@ -16,7 +16,13 @@ public class B {
 
     public static void main(String[] args) {
     //正确的
-
+        System.out.println("kaishi");
+        try {
+            System.out.println();
+        }catch (Exception e){
+            System.out.println("进入");
+            throw e;
+        }
     }
 
 }
