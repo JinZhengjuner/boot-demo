@@ -1,24 +1,19 @@
 spring:
 #  data:
 #    mongodb:
-##      uri: mongodb://123.60.19.184:27017/test
-#      host: 123.60.19.184
+##      uri: mongodb://182.254.221.168:27017/users
+#      host: 182.254.221.168
 #      port: 27017
-#      database: test
-  redis:
-    host: 123.60.19.184
-    port: 6379
+#      database: admin
+#      username: admin
+#      password: admin
+#  redis:
+#    host: 123.60.19.184
+#    port: 6379
 #    password: root
 server:
   port: 8081
 my: ${my}
 #mtwm-api-threshold:
 #  appIdToThresholdStr: 99
-mafka:
-  consumer:
-    - namespace: waimai
-      topic: shangou.emproduct.merchant.sku.change.notify.topic
-      group: merchant_sku_change_stock_consumer
-      listener: com.sankuai.shangou.supplychain.centralstock.sync.infrastructure.mq.consumer.MerchantSkuChangeStockConsumer
-      className: java.lang.String
-      consumerType: CommonConsumer
+
