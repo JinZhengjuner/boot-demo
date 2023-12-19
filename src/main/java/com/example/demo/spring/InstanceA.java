@@ -25,4 +25,8 @@ public class InstanceA {
         System.out.println("InstanceA实例化");
     }
 
+    public void say(){
+        System.out.println("你好，我是A....");
+    }
+
 }

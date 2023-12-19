@@ -27,21 +27,28 @@ public class MyStart {
             //先创建A
             if ("instanceA".equals(key)){
                 getBean(key);
+
             }
-
-
         }
+        InstanceA instanceA = (InstanceA) getBean("instanceA");
+        instanceA.say();
     }
 
     public static Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
 
+    //获取bean
     public static Object getBean(String beanName) throws InstantiationException, IllegalAccessException {
+        Object singleton = getSingleton(beanName);
+        if (singleton != null){
+            return singleton;
+        }
 
         //实例化
         RootBeanDefinition beanDefinition = (RootBeanDefinition) beanDefinitionMap.get(beanName);
         Class<?> beanClass = beanDefinition.getBeanClass();
         Object instanceBean = beanClass.newInstance();
 
+        singletonObjects.put(beanName, instanceBean);
         //属性赋值
         Field[] declaredFields = beanClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
@@ -56,7 +63,14 @@ public class MyStart {
         }
         //初始化  inial... @postconstruct 略 ....
         //添加到一级缓存
-        singletonObjects.put(beanName, instanceBean);
+
         return instanceBean;
+    }
+
+    private static Object getSingleton(String beanName) {
+        if (singletonObjects.containsKey(beanName)){
+            return singletonObjects.get(beanName);
+        }
+        return null;
     }
 }
