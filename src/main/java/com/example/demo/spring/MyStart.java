@@ -35,6 +35,7 @@ public class MyStart {
     }
 
     public static Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
+    public static Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
 
     //获取bean
     public static Object getBean(String beanName) throws InstantiationException, IllegalAccessException {
