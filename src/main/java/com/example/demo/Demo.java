@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
 public class Demo {
     int a;
     public volatile int m1 = 1;
