@@ -35,7 +35,7 @@ public class MyStart {
     }
 
     public static Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
-    public static Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
+    public static Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(); //二级缓存存放不完整Bean，避免读取到不完整的bean
 
     //获取bean
     public static Object getBean(String beanName) throws InstantiationException, IllegalAccessException {
@@ -49,7 +49,7 @@ public class MyStart {
         Class<?> beanClass = beanDefinition.getBeanClass();
         Object instanceBean = beanClass.newInstance();
 
-        singletonObjects.put(beanName, instanceBean);
+        earlySingletonObjects.put(beanName, instanceBean);
         //属性赋值
         Field[] declaredFields = beanClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
@@ -64,13 +64,15 @@ public class MyStart {
         }
         //初始化  inial... @postconstruct 略 ....
         //添加到一级缓存
-
+        singletonObjects.put(beanName, instanceBean);
         return instanceBean;
     }
 
     private static Object getSingleton(String beanName) {
         if (singletonObjects.containsKey(beanName)){
             return singletonObjects.get(beanName);
+        }else if (earlySingletonObjects.containsKey(beanName)){
+            return earlySingletonObjects.get(beanName);
         }
         return null;
     }
