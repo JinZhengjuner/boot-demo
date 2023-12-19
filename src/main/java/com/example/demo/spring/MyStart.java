@@ -49,6 +49,8 @@ public class MyStart {
         Class<?> beanClass = beanDefinition.getBeanClass();
         Object instanceBean = beanClass.newInstance();
 
+        //创建动态代理,这里二级缓存也可以解决动态代理，但是spring还是希望初始化后再进行动态代理
+        instanceBean = new JdkProxyBeanPostProcessor().getEarlyBeanReference(instanceBean, beanName);
         earlySingletonObjects.put(beanName, instanceBean);
         //属性赋值
         Field[] declaredFields = beanClass.getDeclaredFields();
