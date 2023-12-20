@@ -10,7 +10,7 @@ public class MainConfig {
     public Car car(){
         Car car = new Car();
         car.setName("jzj");
-        car.setTank(tank());
+//        car.setTank(tank());
         return car;
     }
 
