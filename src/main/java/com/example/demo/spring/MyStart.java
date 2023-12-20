@@ -54,36 +54,40 @@ public class MyStart {
         if (!singletonCurennlyInCreation.contains(beanName)){
             singletonCurennlyInCreation.add(beanName);
         }
-        //实例化
-        RootBeanDefinition beanDefinition = (RootBeanDefinition) beanDefinitionMap.get(beanName);
-        Class<?> beanClass = beanDefinition.getBeanClass();
-        Object instanceBean = beanClass.newInstance();
+        Object instanceBean = null;
+        synchronized (singletonObjects){
+            //实例化
+            RootBeanDefinition beanDefinition = (RootBeanDefinition) beanDefinitionMap.get(beanName);
+            Class<?> beanClass = beanDefinition.getBeanClass();
+            instanceBean = beanClass.newInstance();
 
-        //说明是循环依赖
-        //创建动态代理,这里二级缓存也可以解决动态代理，但是spring还是希望初始化后再进行动态代理
-        // 只在循环依赖的情况下在实例化后创建proxy，
-        // 怎么判断是否是循环依赖？：二级缓存中有就是循环依赖
-        singletonFactory.put(beanName, () -> new JdkProxyBeanPostProcessor().getEarlyBeanReference(earlySingletonObjects.get(beanName), beanName));
+            //说明是循环依赖
+            //创建动态代理,这里二级缓存也可以解决动态代理，但是spring还是希望初始化后再进行动态代理
+            // 只在循环依赖的情况下在实例化后创建proxy，
+            // 怎么判断是否是循环依赖？：二级缓存中有就是循环依赖
+            singletonFactory.put(beanName, () -> new JdkProxyBeanPostProcessor().getEarlyBeanReference(earlySingletonObjects.get(beanName), beanName));
 
-        //属性赋值
-        Field[] declaredFields = beanClass.getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            Autowired annotation = declaredField.getAnnotation(Autowired.class);
-            /*属性上面有注解*/
-            if (annotation != null){
-                declaredField.setAccessible(true);
-                //spring中是:byName byType byConstruct
-                Object fileObject = getBean(declaredField.getName()); //拿到B的bean
-                declaredField.set(instanceBean, fileObject);
+            //属性赋值
+            Field[] declaredFields = beanClass.getDeclaredFields();
+            for (Field declaredField : declaredFields) {
+                Autowired annotation = declaredField.getAnnotation(Autowired.class);
+                /*属性上面有注解*/
+                if (annotation != null){
+                    declaredField.setAccessible(true);
+                    //spring中是:byName byType byConstruct
+                    Object fileObject = getBean(declaredField.getName()); //拿到B的bean
+                    declaredField.set(instanceBean, fileObject);
+                }
             }
-        }
-        //初始化  inial... @postconstruct 略 ....
-        //添加到一级缓存
+            //初始化  inial... @postconstruct 略 ....
+            //添加到一级缓存
 
-        if (earlySingletonObjects.containsKey(beanName)){
-            instanceBean = earlySingletonObjects.get(beanName);
+            if (earlySingletonObjects.containsKey(beanName)){
+                instanceBean = earlySingletonObjects.get(beanName);
+            }
+            singletonObjects.put(beanName, instanceBean);
         }
-        singletonObjects.put(beanName, instanceBean);
+
         return instanceBean;
     }
 
@@ -91,19 +95,18 @@ public class MyStart {
         Object bean = singletonObjects.get(beanName);
         /*循环依赖 */
         if (bean==null && singletonCurennlyInCreation.contains(beanName)){
-            if (earlySingletonObjects.containsKey(beanName)){
-                return earlySingletonObjects.get(beanName);
-            }
-            ObjectFactory objectFactory = singletonFactory.get(beanName);
-            if (objectFactory != null){
-                Object object = objectFactory.getObject();//得到proxyObject
-                earlySingletonObjects.put(beanName, object);
-                return object;
-            }
-
-
+           synchronized (singletonObjects){
+               if (earlySingletonObjects.containsKey(beanName)){
+                   return earlySingletonObjects.get(beanName);
+               }
+               ObjectFactory objectFactory = singletonFactory.get(beanName);
+               if (objectFactory != null){
+                   Object object = objectFactory.getObject();//得到proxyObject
+                   earlySingletonObjects.put(beanName, object);
+                   return object;
+               }
+           }
         }
-
 
         if (singletonObjects.containsKey(beanName)){
             return singletonObjects.get(beanName);
