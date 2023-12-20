@@ -1,8 +1,6 @@
 package com.example.demo.spring.listen;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 /***
  * @Author 徐庶   QQ:1092002729
@@ -10,8 +8,8 @@ import org.springframework.stereotype.Component;
  *
  * 监听器
  */
-@Component
-@Lazy
+//@Component
+//@Lazy
 public class OrderEventListener {//}  implements ApplicationListener<OrderEvent> {
 
     // 基于注解的
