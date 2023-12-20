@@ -56,6 +56,9 @@ public class MyStart {
         }
         Object instanceBean = null;
         synchronized (singletonObjects){
+            if (singletonObjects.containsKey(beanName)){
+                return singletonObjects.get(beanName);
+            }
             //实例化
             RootBeanDefinition beanDefinition = (RootBeanDefinition) beanDefinitionMap.get(beanName);
             Class<?> beanClass = beanDefinition.getBeanClass();
